@@ -279,7 +279,7 @@ exports.addAdminOrder = async (req, res) => {
     // ✅ Handle slip upload (only for Bank Transfer)
     let slipPath = null;
     if (paymentMethod === "Bank Transfer" && req.file) {
-      slipPath = `/uploads/slips/${req.file.filename}`;
+      slipPath = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
     }
 
     const newOrder = new AdminOrder({
@@ -315,8 +315,8 @@ exports.addAdminOrder = async (req, res) => {
             amount: totalCost,
             currency: "lkr",
             description: notes || undefined,
-            slipUrl: `${req.protocol}://${req.get("host")}${slipPath}`,
-            slipPath: req.file.path,
+            slipUrl: slipPath,
+            slipPath: "base64",
             slipOriginalName: req.file.originalname,
             slipMimeType: req.file.mimetype,
             slipSize: req.file.size,

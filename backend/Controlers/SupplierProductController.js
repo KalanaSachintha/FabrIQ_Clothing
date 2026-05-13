@@ -3,16 +3,11 @@ const multer = require("multer");
 const path = require("path");
 
 /* ------------------- Multer setup ------------------- */
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); // unique filename
-  },
+const storage = multer.memoryStorage();
+const upload = multer({ 
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 }
 });
-
-const upload = multer({ storage });
 
 /* ------------------- Get all supplier products ------------------- */
 const getAllSupplierProducts = async (req, res) => {
@@ -36,7 +31,7 @@ const getAllSupplierProducts = async (req, res) => {
 
 const addSupplierProduct = async (req, res) => {
   const { name, price, description } = req.body;
-  const imageUrl = req.file ? `/uploads/${req.file.filename}` : "";
+  const imageUrl = req.file ? `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}` : "";
 
   try {
     const supplierproduct = new SupplierProduct({
@@ -80,7 +75,7 @@ const getbysupplierProductId = async (req, res) => {
 /* ------------------- Update supplier product ------------------- */
 const updateSupplierProduct = async (req, res) => {
   const { name, price, description } = req.body;
-  const imageUrl = req.file ? `/uploads/${req.file.filename}` : undefined;
+  const imageUrl = req.file ? `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}` : undefined;
 
   try {
     const supplierProduct = await SupplierProduct.findById(req.params.pid);

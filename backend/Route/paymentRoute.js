@@ -26,14 +26,7 @@ const uploadDir = path.join(process.cwd(), "uploads", "slips");
 fs.mkdirSync(uploadDir, { recursive: true });
 
 /* ----------------------------- multer setup ----------------------------- */
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, uploadDir),
-  filename: (_req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const base = path.basename(file.originalname, ext).replace(/\s+/g, "_").slice(0, 80);
-    cb(null, `${Date.now()}_${base}${ext}`);
-  },
-});
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 /* ----------------------------- CRUD (admin UI) ----------------------------- */

@@ -12,19 +12,7 @@ const Order = require('../Model/orderModel');
 
 
 // Configure multer for review image uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const uploadPath = 'uploads/reviews/';
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
-    }
-    cb(null, uploadPath);
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, 'review-' + uniqueSuffix + path.extname(file.originalname));
-  }
-});
+const storage = multer.memoryStorage();
 
 const upload = multer({ 
   storage: storage,
@@ -132,17 +120,7 @@ const notifyUser = async (userId, payload = {}) => {
 };
 
 const removeFiles = (paths = []) => {
-  paths
-    .filter(Boolean)
-    .forEach((img) => {
-      const relativePath = img.startsWith('/') ? img.slice(1) : img;
-      const fullPath = path.join(process.cwd(), relativePath);
-      fs.unlink(fullPath, (error) => {
-        if (error && error.code !== 'ENOENT') {
-          console.warn('Failed to remove file:', fullPath, error.message);
-        }
-      });
-    });
+  // Logic removed: images are now stored as Base64 in MongoDB
 };
 
 const hasPermission = (req, perms = []) => {
@@ -248,7 +226,7 @@ const createReview = async (req, res) => {
     const images = [];
     if (req.files && req.files.length > 0) {
       req.files.forEach(file => {
-        images.push(`/uploads/reviews/${file.filename}`);
+        images.push(`data:${file.mimetype};base64,${file.buffer.toString("base64")}`);
       });
     }
 

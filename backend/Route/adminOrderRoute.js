@@ -21,12 +21,7 @@ const uploadDir = path.join(__dirname, "../uploads/slips");
 fs.mkdirSync(uploadDir, { recursive: true });
 
 // Upload config
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, uploadDir),
-  filename: (_req, file, cb) => {
-    cb(null, `${Date.now()}${path.extname(file.originalname)}`);
-  },
-});
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // ✅ Order with optional slip

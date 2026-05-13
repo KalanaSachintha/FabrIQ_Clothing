@@ -2,15 +2,7 @@ const BulkOrder = require("../Model/BulkOrderModel");
 const multer = require("multer");
 const path = require("path");
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
-});
-
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 const createBulkOrder = async (req, res) => {
@@ -21,10 +13,12 @@ const createBulkOrder = async (req, res) => {
 
     if (req.files) {
       if (req.files.image1 && req.files.image1[0]) {
-        image1 = `/uploads/${req.files.image1[0].filename}`;
+        const file = req.files.image1[0];
+        image1 = `data:${file.mimetype};base64,${file.buffer.toString("base64")}`;
       }
       if (req.files.image2 && req.files.image2[0]) {
-        image2 = `/uploads/${req.files.image2[0].filename}`;
+        const file = req.files.image2[0];
+        image2 = `data:${file.mimetype};base64,${file.buffer.toString("base64")}`;
       }
     }
 

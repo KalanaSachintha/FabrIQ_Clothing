@@ -769,7 +769,7 @@ exports.createPaymentWithSlip = async (req, res) => {
     const normalizedCurrency = String(currency || "lkr").toLowerCase();
 
     const file = req.file;
-    const slipUrl = `${req.protocol}://${req.get("host")}/uploads/slips/${file.filename}`;
+    const slipUrl = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
 
     const paymentData = {
       paymentId: resolvedPaymentId,
@@ -781,7 +781,7 @@ exports.createPaymentWithSlip = async (req, res) => {
       method: "slip",
       currency: normalizedCurrency,
       slipUrl,
-      slipPath: file.path,
+      slipPath: "base64",
       slipOriginalName: file.originalname,
       slipMimeType: file.mimetype,
       slipSize: file.size,
@@ -826,13 +826,13 @@ exports.uploadSlip = async (req, res) => {
     if (!req.file) return res.status(400).json({ message: "Slip file is required" });
 
     const file = req.file;
-    const slipUrl = `${req.protocol}://${req.get("host")}/uploads/slips/${file.filename}`;
+    const slipUrl = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
 
     const update = {
       paymentStatus: "pending",
       method: "slip",
       slipUrl,
-      slipPath: file.path,
+      slipPath: "base64",
       slipOriginalName: file.originalname,
       slipMimeType: file.mimetype,
       slipSize: file.size,

@@ -3,16 +3,11 @@ const Notification = require("../Model/NotificationModel");
 const multer = require("multer");
 const path = require("path");
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
+const storage = multer.memoryStorage();
+const upload = multer({ 
+  storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit to prevent hitting MongoDB document size limits
 });
-
-const upload = multer({ storage: storage });
 
 const collectUploadedFiles = (req) => {
   if (Array.isArray(req?.files)) {
@@ -147,7 +142,7 @@ const buildColorVariantModels = (variantPayload, fileLookup) => {
     const uploadedImageUrls = variant.imageKeys.flatMap((key) => {
       const bucket = fileLookup?.[key];
       if (!Array.isArray(bucket) || !bucket.length) return [];
-      return bucket.map((file) => `/uploads/${file.filename}`);
+      return bucket.map((file) => `data:${file.mimetype};base64,${file.buffer.toString("base64")}`);
     });
 
     const merged = [...variant.existingImageUrls, ...uploadedImageUrls].filter(Boolean);
@@ -626,7 +621,7 @@ const updateProduct = async (req, res) => {
         product.imageUrl = variantBuild.primaryImageUrl;
       }
     } else if (uploadedFiles.length) {
-      const fallbackUrls = uploadedFiles.map((file) => `/uploads/${file.filename}`);
+      const fallbackUrls = uploadedFiles.map((file) => `data:${file.mimetype};base64,${file.buffer.toString("base64")}`);
       if (fallbackUrls.length) {
         product.imageUrl = fallbackUrls[0];
         const mergedGallery = Array.from(new Set([...(product.galleryImageUrls || []), ...fallbackUrls]));

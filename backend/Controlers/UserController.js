@@ -101,14 +101,7 @@ async function attachPerms(uDocOrPlain) {
   return u;
 }
 
-const purgeUserArtifacts = (userDoc) => {
-  if (!userDoc) return;
-  const avatarPath = userDoc.avatar || "";
-  if (avatarPath && avatarPath.startsWith("/uploads/")) {
-    const fp = path.join(__dirname, "..", avatarPath.replace(/^\//, ""));
-    fs.unlink(fp, () => {});
-  }
-};
+// Removed purgeUserArtifacts since images are now stored as Base64 in MongoDB
 
 /* ------------------------------- /users/me -------------------------------- */
 const getMe = async (req, res) => {
@@ -420,7 +413,7 @@ const deleteUser = async (req, res) => {
     const u = await User.findByIdAndDelete(req.params.id);// delete user by ID
     if (!u) return res.status(404).json({ message: "User not found" });
 
-    purgeUserArtifacts(u);
+    // purgeUserArtifacts(u); // No longer needed for Base64 storage
 
     await recordActivity({
       userId: u._id,
@@ -458,7 +451,7 @@ const deleteSelf = async (req, res) => {
     const u = await User.findByIdAndDelete(userId);
     if (!u) return res.status(404).json({ message: "User not found" });
 
-    purgeUserArtifacts(u);
+    // purgeUserArtifacts(u); // No longer needed for Base64 storage
 
     await recordActivity({
       userId,
@@ -513,7 +506,7 @@ const setAvatar = async (req, res) => {
     const { id } = req.params; // user ID from URL params
     if (!req.file) return res.status(400).json({ message: "No file uploaded" });
 
-    const avatar = `/uploads/${req.file.filename}`;
+    const avatar = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
     const u = await User.findByIdAndUpdate(id, { avatar }, { new: true });
     if (!u) return res.status(404).json({ message: "User not found" });
 
@@ -542,11 +535,6 @@ const deleteAvatar = async (req, res) => {
     const old = u.avatar || "";
     u.avatar = "";
     await u.save();
-
-    if (old && old.startsWith("/uploads/")) {
-      const fp = path.join(__dirname, "..", old.replace(/^\//, ""));
-      fs.unlink(fp, () => {});
-    }
 
     const payload = await attachPerms(u);
     await recordActivity({
