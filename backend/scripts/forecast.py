@@ -54,6 +54,10 @@ def run_forecast(product_id_str):
         ]
 
         data = list(orders_col.aggregate(pipeline))
+        
+        # Debugging: Log how many records were found for this product
+        import sys
+        print(f"DEBUG: Found {len(data)} matching order items for Product ID: {product_id_str}", file=sys.stderr)
 
         if not data:
             return {
