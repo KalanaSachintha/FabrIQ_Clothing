@@ -15,8 +15,8 @@ router.get('/forecast/:productId', (req, res) => {
     const scriptPath = path.join(__dirname, '../scripts/forecast.py');
 
     // Spawn Python process
-    // Note: Use 'python' or 'python3' depending on your environment
-    const pythonProcess = spawn('python', [scriptPath, productId]);
+    // Explicitly use 'python3' for Debian-based environments
+    const pythonProcess = spawn('python3', [scriptPath, productId]);
 
     let stdoutData = '';
     let stderrData = '';
@@ -37,7 +37,7 @@ router.get('/forecast/:productId', (req, res) => {
             console.error(`Forecasting script failed (code ${code}): ${stderrData}`);
             return res.status(500).json({ 
                 status: 'error', 
-                message: 'Forecasting script failed', 
+                message: `Forecasting script failed: ${stderrData}`, 
                 details: stderrData 
             });
         }

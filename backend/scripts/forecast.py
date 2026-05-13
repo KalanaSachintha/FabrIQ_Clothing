@@ -1,15 +1,20 @@
 import sys
 import json
 import os
-import pandas as pd
-from pymongo import MongoClient
-from datetime import datetime, timedelta
-from sklearn.ensemble import RandomForestRegressor
-import numpy as np
-from bson import ObjectId
-import math
+try:
+    import pandas as pd
+    from pymongo import MongoClient
+    from sklearn.ensemble import RandomForestRegressor
+    import numpy as np
+    from datetime import datetime, timedelta
+    from bson import ObjectId
+    import math
+except ImportError as e:
+    import sys
+    print(f"Missing dependency: {str(e)}", file=sys.stderr)
+    print(json.dumps({"status": "error", "message": f"Python dependencies missing: {str(e)}"}))
+    sys.exit(1)
 
-# Suppress warnings for cleaner stdout
 import warnings
 warnings.filterwarnings("ignore")
 
