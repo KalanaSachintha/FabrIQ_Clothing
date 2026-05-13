@@ -16,12 +16,20 @@ warnings.filterwarnings("ignore")
 def run_forecast(product_id_str):
     try:
         # DB connection
-        mongo_uri = os.environ.get("MONGODB_URI", "mongodb+srv://rexxyaloconar_db_user:fU8NxUjFVUWAZNBs@fabriq.kmjnhhn.mongodb.net/FabrIQ")
+        mongo_uri = os.environ.get("MONGODB_URI")
+        
+        # Fallback for local testing if needed, but primary source should be env
+        if not mongo_uri:
+            mongo_uri = "mongodb+srv://rexxyaloconar_db_user:fU8NxUjFVUWAZNBs@fabriq.kmjnhhn.mongodb.net/FabrIQ"
+            
         client = MongoClient(mongo_uri)
         
-        # Get DB name from URI or use default
-        db_name = "FabrIQ"
-        db = client[db_name]
+        # Try to get DB name from URI, fallback to 'FabrIQ'
+        try:
+            db = client.get_default_database()
+        except:
+            db = client["FabrIQ"]
+            
         orders_col = db["orders"]
 
         # Ensure valid ObjectId
@@ -109,6 +117,9 @@ def run_forecast(product_id_str):
         }
 
     except Exception as e:
+        import traceback
+        error_msg = f"Forecasting Exception: {str(e)}\n{traceback.format_exc()}"
+        print(error_msg, file=sys.stderr)
         return {"status": "error", "message": str(e)}
 
 if __name__ == "__main__":
