@@ -1,0 +1,265 @@
+/* BulkOrder.css */
+.bulk-order-container {
+  position: relative;
+  min-height: calc(100vh - 100px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(100px, 15vh, 140px) 20px 80px;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  overflow: hidden;
+  border-radius: 40px;
+  margin: 10px 20px 20px;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+}
+
+/* Theme-aware dynamic overlay */
+.bulk-order-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.4) 100%);
+  backdrop-filter: blur(3px);
+  z-index: 0;
+}
+
+html[data-theme="dark"] .bulk-order-container::before {
+  background: radial-gradient(circle at center, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 100%);
+  backdrop-filter: blur(5px);
+}
+
+.bulk-order-card {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  padding: clamp(24px, 5vw, 48px);
+  border-radius: 32px;
+  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.15),
+              0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  width: 100%;
+  max-width: 680px;
+  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html[data-theme="dark"] .bulk-order-card {
+  background: rgba(15, 23, 42, 0.65);
+  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.6),
+              0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.bulk-order-card h2 {
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-strong);
+  margin-bottom: 0.75rem;
+  text-align: center;
+  background: linear-gradient(135deg, var(--text-strong) 0%, var(--text-muted) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bulk-order-subtext {
+  color: var(--text-muted);
+  text-align: center;
+  font-size: 1.05rem;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+
+.bulk-order-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.form-group label {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+}
+
+.form-group input,
+.form-group select {
+  padding: 0.9rem 1.1rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 16px;
+  font-size: 1rem;
+  color: var(--text-primary);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+html[data-theme="dark"] .form-group input,
+html[data-theme="dark"] .form-group select {
+  background: rgba(15, 23, 42, 0.4);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+  transform: translateY(-1px);
+}
+
+html[data-theme="dark"] .form-group input:focus,
+html[data-theme="dark"] .form-group select:focus {
+  background: rgba(15, 23, 42, 0.8);
+}
+
+.bulk-order-btn {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+  color: var(--accent-contrast);
+  border: none;
+  padding: 1.1rem;
+  border-radius: 18px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  margin-top: 1.5rem;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.2);
+}
+
+.bulk-order-btn:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 25px 50px -15px rgba(0, 0, 0, 0.3);
+}
+
+.bulk-order-btn:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.bulk-order-msg {
+  padding: 1.25rem;
+  border-radius: 20px;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-weight: 600;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Data Table Styles */
+.table-scroller {
+  overflow-x: auto;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.03);
+  margin: 1.5rem 0;
+}
+
+html[data-theme="dark"] .table-scroller {
+  background: rgba(15, 23, 42, 0.4);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.95rem;
+}
+
+.data-table th {
+  background: rgba(148, 163, 184, 0.05);
+  color: var(--text-muted);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  padding: 20px 24px;
+  text-align: left;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.data-table td {
+  padding: 20px 24px;
+  color: var(--text-primary);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.05);
+  vertical-align: middle;
+  transition: all 0.2s ease;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tr:hover td {
+  background: rgba(148, 163, 184, 0.02);
+  color: var(--text-strong);
+}
+
+html[data-theme="dark"] .data-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.data-table .font-bold {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+/* Actions cell alignment */
+.data-table .text-right {
+  text-align: right;
+}
+
+.data-table .badge {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-amber {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+html[data-theme="dark"] .badge-amber {
+  background: rgba(251, 191, 36, 0.1);
+  color: #fbbf24;
+}
+
+/* Admin Styling Sync */
+.data-table img {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.data-table img:hover {
+  transform: scale(1.1);
+}

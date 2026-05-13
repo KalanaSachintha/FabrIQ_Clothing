@@ -1,0 +1,232 @@
+
+.site-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10000;
+  padding-block: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+html[data-theme="dark"] .site-header {
+  background: rgba(10, 10, 10, 0.95);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.header-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 20px;
+}
+
+.brand {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.brand-name {
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  color: #000 !important; /* Explicitly dark */
+  line-height: 1;
+}
+
+html[data-theme="dark"] .brand-name {
+  color: #fff !important;
+}
+
+.brand-subtitle {
+  display: none !important;
+}
+
+.primary-nav {
+  display: flex;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.nav-link {
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  color: #333 !important; /* Explicitly dark */
+  cursor: pointer;
+  transition: 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: #000 !important;
+  text-decoration: underline;
+  text-underline-offset: 8px;
+}
+
+html[data-theme="dark"] .nav-link {
+  color: #ccc !important;
+}
+
+html[data-theme="dark"] .nav-link:hover, html[data-theme="dark"] .nav-link.active {
+  color: #fff !important;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-shrink: 0;
+}
+
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #000;
+  width: 38px;
+  height: 38px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  padding: 0;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+html[data-theme="dark"] .icon-button {
+  color: #fff;
+}
+
+.cart-button .badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: #000;
+  color: #fff;
+  font-size: 10px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
+
+html[data-theme="dark"] .cart-button .badge {
+  background: #fff;
+  color: #000;
+}
+
+.solid-button {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+html[data-theme="dark"] .solid-button {
+  background: #fff;
+  color: #000;
+}
+
+.mobile-toggle {
+  display: none;
+}
+
+.icon-cluster {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center;
+  gap: 15px;
+}
+
+.auth-buttons {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center;
+  gap: 15px;
+}
+
+.account-controls {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center;
+  position: relative;
+}
+
+/* Account Dropdown */
+.account-menu {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  width: 250px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 10001;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+html[data-theme="dark"] .account-menu {
+  background: #111;
+  border-color: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+.account-menu p { font-weight: 800; font-size: 15px; margin-bottom: 2px; }
+.account-menu span { color: #888; font-size: 13px; display: block; }
+.account-menu .account-summary { 
+  display: flex; gap: 15px; align-items: center; padding-bottom: 15px; border-bottom: 1px solid rgba(0,0,0,0.05); 
+}
+html[data-theme="dark"] .account-menu .account-summary { border-color: rgba(255,255,255,0.05); }
+
+.account-menu button {
+  background: #f8f8f8;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  text-align: left;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+html[data-theme="dark"] .account-menu button { background: #222; color: #fff; }
+
+.account-menu button.danger { color: #f44 !important; }
+
+.text-button {
+  background: none;
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+html[data-theme="dark"] .text-button { color: #fff; }
+
+/* Removed mobile media query to keep everything in one line */

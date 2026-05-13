@@ -1,0 +1,16 @@
+{
+  "name": "cleanrepo-monorepo",
+  "version": "1.0.0",
+  "description": "Root package.json for hosting on Render",
+  "scripts": {
+    "install-backend": "cd backend && npm install",
+    "install-frontend": "cd frontend && npm install",
+    "build-frontend": "cd frontend && npm run build",
+    "postinstall": "npm run install-backend && npm run install-frontend",
+    "build": "npm run build-frontend",
+    "start": "cd backend && node app.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

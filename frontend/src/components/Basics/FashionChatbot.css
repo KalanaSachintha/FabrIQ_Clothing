@@ -1,0 +1,221 @@
+.fashion-chatbot {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 999;
+  font-family: inherit;
+}
+
+.fashion-chatbot-toggle {
+  position: relative;
+  border: none;
+  border-radius: 999px;
+  padding: 0.8rem 1.6rem;
+  background: linear-gradient(135deg, #4f46e5, #22c55e);
+  color: #f9fafb;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.5);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease, transform 0.15s ease;
+}
+
+.fashion-chatbot-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Small speech-bubble tail */
+.fashion-chatbot-toggle::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  right: 18px;
+  width: 14px;
+  height: 14px;
+  background: linear-gradient(135deg, #4f46e5, #22c55e);
+  transform: rotate(45deg);
+  border-radius: 0 0 6px 0;
+  box-shadow: 0 6px 12px rgba(15, 23, 42, 0.4);
+}
+
+.fashion-chatbot-panel {
+  position: absolute;
+  right: 0;
+  bottom: 3.25rem;
+  width: 320px;
+  max-height: 480px;
+  background: rgba(15, 23, 42, 0.98);
+  border-radius: 1rem;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.fashion-chatbot-messages {
+  flex: 1;
+  padding: 0.75rem 0.9rem;
+  overflow-y: auto;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(17, 24, 39, 0.98));
+}
+
+.fashion-chatbot-message {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+
+.fashion-chatbot-message--user {
+  justify-content: flex-end;
+}
+
+.fashion-chatbot-message--bot {
+  justify-content: flex-start;
+}
+
+.fashion-chatbot-bubble {
+  max-width: 80%;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1.35;
+}
+
+.fashion-chatbot-message--user .fashion-chatbot-bubble {
+  background: linear-gradient(135deg, #4f46e5, #22c55e);
+  color: #f9fafb;
+  border-bottom-right-radius: 0.15rem;
+}
+
+.fashion-chatbot-message--bot .fashion-chatbot-bubble {
+  background: rgba(31, 41, 55, 0.95);
+  color: #e5e7eb;
+  border-bottom-left-radius: 0.15rem;
+}
+
+.fashion-chatbot-products {
+  margin-top: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.4rem;
+}
+
+.fashion-chatbot-product-card {
+  text-decoration: none;
+  background: rgba(15, 23, 42, 0.96);
+  border-radius: 0.6rem;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  box-shadow: 0 4px 10px rgba(8, 47, 73, 0.5);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.fashion-chatbot-product-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.25);
+}
+
+.fashion-chatbot-product-card img {
+  width: 100%;
+  height: 90px;
+  object-fit: cover;
+}
+
+.fashion-chatbot-product-info {
+  padding: 0.35rem 0.45rem 0.4rem;
+}
+
+.fashion-chatbot-product-name {
+  display: block;
+  font-weight: 600;
+  font-size: 0.78rem;
+  color: #111827;
+}
+
+.fashion-chatbot-product-brand {
+  display: block;
+  font-size: 0.7rem;
+  color: #6b7280;
+}
+
+.fashion-chatbot-product-price {
+  display: block;
+  font-size: 0.78rem;
+  color: #16a34a;
+  margin-top: 0.15rem;
+}
+
+.fashion-chatbot-input-row {
+  display: flex;
+  align-items: flex-end;
+  padding: 0.45rem 0.55rem 0.5rem;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.fashion-chatbot-input-row textarea {
+  flex: 1 1 auto;
+  resize: none;
+  border-radius: 0.6rem;
+  border: 1px solid #d1d5db;
+  padding: 0.45rem 0.55rem;
+  font-size: 0.85rem;
+  font-family: inherit;
+  min-height: 34px;
+  max-height: 76px;
+}
+
+.fashion-chatbot-input-row textarea:focus {
+  outline: none;
+  border-color: #111827;
+  box-shadow: 0 0 0 1px #11182711;
+}
+
+.fashion-chatbot-mic {
+  margin-left: 0.4rem;
+  border: none;
+  border-radius: 999px;
+  padding: 0.38rem 0.6rem;
+  font-size: 1rem;
+  cursor: pointer;
+  background: #0f172a;
+  color: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fashion-chatbot-mic--active {
+  background: #22c55e;
+  color: #0f172a;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3);
+}
+
+.fashion-chatbot-send {
+  margin-left: 0.4rem;
+  border: none;
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: #111827;
+  color: #f9fafb;
+}
+
+.fashion-chatbot-send:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+@media (max-width: 640px) {
+  .fashion-chatbot-panel {
+    width: 100vw;
+    max-width: 100vw;
+    right: -0.75rem;
+  }
+}
