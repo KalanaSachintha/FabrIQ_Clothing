@@ -91,7 +91,7 @@ app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
-app.get("*", (req, res) => {
+app.get("(.*)", (req, res) => {
   // If the request starts with /api or matches other routes, it should have been caught already
   // This catch-all serves index.html for React Router to handle client-side routing
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
