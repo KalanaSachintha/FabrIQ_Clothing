@@ -29,11 +29,11 @@ def run_forecast(product_id_str):
             
         client = MongoClient(mongo_uri)
         
-        # Try to get DB name from URI, fallback to 'FabrIQ'
+        # Try to get DB name from URI, fallback to 'test' (Mongoose default)
         try:
             db = client.get_default_database()
         except:
-            db = client["FabrIQ"]
+            db = client["test"]
             
         orders_col = db["orders"]
 
