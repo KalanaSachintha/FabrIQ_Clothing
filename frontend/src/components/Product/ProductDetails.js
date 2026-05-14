@@ -9,6 +9,7 @@ const API_ROOT = (process.env.REACT_APP_API_URL || "http://localhost:5000").repl
 
 const resolveImageUrl = (imageUrl = "") => {
   if (!imageUrl) return null;
+  if (/^data:image\//i.test(imageUrl)) return imageUrl;
   if (/^https?:/i.test(imageUrl)) return imageUrl;
   const normalized = imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`;
   return `${API_ROOT}${normalized}`;

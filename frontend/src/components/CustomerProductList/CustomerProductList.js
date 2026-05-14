@@ -8,6 +8,7 @@ import { formatLKR } from "../../utils/currency";
 
 const resolveImageUrl = (apiRoot, imageUrl = "") => {
   if (!imageUrl) return "";
+  if (/^data:image\//i.test(imageUrl)) return imageUrl;
   if (/^https?:/i.test(imageUrl)) return imageUrl;
   const normalized = imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`;
   return `${apiRoot}${normalized}`;

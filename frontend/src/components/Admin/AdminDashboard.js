@@ -141,6 +141,7 @@ const daysUntilDate = (value) => {
 
 const resolveImageUrl = (path) => {
   if (!path) return "";
+  if (/^data:image\//i.test(path)) return path;
   if (/^https?:\/\//i.test(path)) {
     return path;
   }

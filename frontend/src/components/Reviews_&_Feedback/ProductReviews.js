@@ -11,6 +11,7 @@ const API_ROOT = (process.env.REACT_APP_API_URL || "http://localhost:5000").repl
 
 const resolveImageUrl = (url) => {
   if (!url) return "";
+  if (/^data:image\//i.test(url)) return url;
   const normalized = url.replace(/\\/g, "/");
   if (/^https?:\/\//i.test(normalized)) return normalized;
   const withLeadingSlash = normalized.startsWith("/") ? normalized : `/${normalized}`;
