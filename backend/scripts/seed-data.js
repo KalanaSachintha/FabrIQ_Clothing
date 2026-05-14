@@ -5,9 +5,16 @@
 const mongoose = require('mongoose');
 const Order = require('../Model/orderModel');
 const Product = require('../Model/ProductModel');
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
-// Database URI - using the one from app.js
-const MONGO_URI = 'mongodb+srv://rexxyaloconar_db_user:fU8NxUjFVUWAZNBs@fabriq.kmjnhhn.mongodb.net/FabrIQ';
+// Database URI - using the one from .env
+const MONGO_URI = process.env.MONGODB_URI;
+
+if (!MONGO_URI) {
+    console.error('❌ Error: MONGODB_URI is not defined in .env file.');
+    process.exit(1);
+}
 
 const seedData = async () => {
     try {
