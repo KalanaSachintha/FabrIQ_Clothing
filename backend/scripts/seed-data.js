@@ -25,7 +25,12 @@ const seedData = async () => {
         // 1. Fetch existing products
         let products = await Product.find();
         
-        // 2. If no products exist, create some samples first
+        // 2. Clear existing orders to avoid mixing old data
+        console.log('🗑️ Clearing existing orders for a fresh start...');
+        await Order.deleteMany({});
+        console.log('✅ Collection cleared.');
+
+        // 3. If no products exist, create some samples first
         if (products.length === 0) {
             console.log('⚠️ No products found. Creating 3 sample items...');
             const sampleProducts = [
@@ -64,7 +69,7 @@ const seedData = async () => {
             console.log('✅ Sample products created.');
         }
 
-        console.log(`📊 Generating historical orders for ${products.length} products over 90 days...`);
+        console.log(`📊 Generating realistic historical orders for ${products.length} products over 90 days...`);
 
         const orders = [];
         const now = new Date();
@@ -75,14 +80,17 @@ const seedData = async () => {
             const orderDate = new Date();
             orderDate.setDate(now.getDate() - day);
             
-            // Introduce a trend: Sales generally increase as we get closer to "today"
-            // Also add a weekend boost (Friday, Saturday, Sunday)
+            // Introduce seasonality and trends
             const isWeekend = orderDate.getDay() === 0 || orderDate.getDay() === 5 || orderDate.getDay() === 6;
-            const trendProgress = (90 - day) / 90; // 0 (90 days ago) to 1 (today)
+            const trendProgress = (90 - day) / 90; // 0 (old) to 1 (now)
             
-            // Base orders: weekend gets more, and we add a growth trend
-            const maxPossibleOrders = isWeekend ? 8 : 4;
-            const dailyOrders = Math.floor(Math.random() * (maxPossibleOrders + (trendProgress * 4)));
+            // Monthly Sine Wave (Peaks every 30 days)
+            const seasonality = Math.sin((90 - day) * (2 * Math.PI / 30));
+            
+            // Base daily order volume
+            const baseVolume = 3 + (seasonality * 2) + (trendProgress * 4);
+            const maxPossibleOrders = isWeekend ? baseVolume + 3 : baseVolume;
+            const dailyOrders = Math.max(0, Math.floor(Math.random() * maxPossibleOrders));
             
             for (let i = 0; i < dailyOrders; i++) {
                 // Randomize time of day
@@ -95,8 +103,9 @@ const seedData = async () => {
 
                 for (let j = 0; j < numItems; j++) {
                     const product = products[Math.floor(Math.random() * products.length)];
-                    // Quantity also slightly trends upwards
-                    const quantity = Math.floor(Math.random() * (3 + Math.floor(trendProgress * 3))) + 1;
+                    
+                    // Quantity also has some variety (1 to 5)
+                    const quantity = Math.floor(Math.random() * 5) + 1;
                     
                     items.push({
                         productId: product._id,
@@ -122,8 +131,8 @@ const seedData = async () => {
             }
         }
 
-        // 3. Insert into Database
-        console.log(`🚀 Inserting ${orders.length} historical records into the 'orders' collection...`);
+        // 4. Insert into Database
+        console.log(`🚀 Inserting ${orders.length} unique historical records...`);
         await Order.insertMany(orders);
 
         console.log('✨ Database seeding complete! You can now test the Forecasting Dashboard.');
