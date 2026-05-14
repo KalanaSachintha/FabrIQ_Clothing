@@ -68,8 +68,14 @@ const seedData = async () => {
             const orderDate = new Date();
             orderDate.setDate(now.getDate() - day);
             
-            // Random number of orders per day (0 to 6)
-            const dailyOrders = Math.floor(Math.random() * 7);
+            // Introduce a trend: Sales generally increase as we get closer to "today"
+            // Also add a weekend boost (Friday, Saturday, Sunday)
+            const isWeekend = orderDate.getDay() === 0 || orderDate.getDay() === 5 || orderDate.getDay() === 6;
+            const trendProgress = (90 - day) / 90; // 0 (90 days ago) to 1 (today)
+            
+            // Base orders: weekend gets more, and we add a growth trend
+            const maxPossibleOrders = isWeekend ? 8 : 4;
+            const dailyOrders = Math.floor(Math.random() * (maxPossibleOrders + (trendProgress * 4)));
             
             for (let i = 0; i < dailyOrders; i++) {
                 // Randomize time of day
@@ -82,7 +88,8 @@ const seedData = async () => {
 
                 for (let j = 0; j < numItems; j++) {
                     const product = products[Math.floor(Math.random() * products.length)];
-                    const quantity = Math.floor(Math.random() * 4) + 1;
+                    // Quantity also slightly trends upwards
+                    const quantity = Math.floor(Math.random() * (3 + Math.floor(trendProgress * 3))) + 1;
                     
                     items.push({
                         productId: product._id,
