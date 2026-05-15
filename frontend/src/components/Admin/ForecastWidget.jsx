@@ -119,12 +119,12 @@ const ForecastWidget = ({ productId }) => {
         </ResponsiveContainer>
       </div>
 
-      <div className="grid grid-cols-4 gap-4 mt-6 text-center">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 text-center">
         {forecastData.map((d, index) => (
-          <div key={index} className="p-4 bg-gray-50 rounded-xl border border-gray-100 shadow-sm">
-            <span className="block text-[11px] text-gray-400 font-bold uppercase tracking-wider mb-1">{d.weekName}</span>
-            <span className="block text-2xl font-black text-indigo-700">{d.predictedSales}</span>
-            <span className="block text-[9px] text-gray-400">units</span>
+          <div key={index} className="p-4 bg-gray-50 rounded-xl border border-gray-100 shadow-sm flex flex-col items-center justify-center">
+            <span className="text-sm font-bold text-gray-600">
+              {d.weekName} <span className="text-xl font-black text-indigo-700 ml-1">{d.predictedSales}</span> <span className="text-[10px] text-gray-400 ml-1 uppercase">units</span>
+            </span>
           </div>
         ))}
       </div>
