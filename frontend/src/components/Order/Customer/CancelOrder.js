@@ -17,8 +17,9 @@ function CancelOrder() {
     }
 
     try {
+      const API_ROOT = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/$/, "");
       const response = await axios.put(
-        `http://localhost:5000/api/orders/cancel/${id}`,
+        `${API_ROOT}/api/orders/cancel/${id}`,
         { cancelReason: finalReason } // Must match backend
       );
 

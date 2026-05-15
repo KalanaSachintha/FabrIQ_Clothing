@@ -147,7 +147,7 @@ function AdminCart() {
     try {
       const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
       if (!token) return;
-      await fetch(`${(process.env.REACT_APP_API_URL || 'http://localhost:5000').replace(/\/$/, '')}/api/admin-carts`, {
+      await fetch(`${API_ROOT}/api/admin-carts`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ items }),
@@ -252,7 +252,7 @@ function AdminCart() {
       try {
         const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
         if (token) {
-          await fetch(`${(process.env.REACT_APP_API_URL || 'http://localhost:5000').replace(/\/$/, '')}/api/admin-carts`, {
+          await fetch(`${API_ROOT}/api/admin-carts`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
             body: JSON.stringify({ items: cartItems }),
@@ -273,6 +273,12 @@ function AdminCart() {
     })();
   };
 
+  const resolveImageUrl = (path) => {
+    if (!path) return "https://via.placeholder.com/260x180?text=Product";
+    if (/^data:image\//i.test(path)) return path;
+    if (/^https?:\/\//i.test(path)) return path;
+    return `${API_ROOT}${path.startsWith("/") ? "" : "/"}${path}`;
+  };
 
   return (
     <div className="admin-cart-page">
@@ -305,13 +311,7 @@ function AdminCart() {
                   >
                     <figure className="cart-item__media">
                       <img
-                        src={
-                          item.img?.startsWith("http")
-                            ? item.img
-                            : item.img
-                            ? `http://localhost:5000${item.img}`
-                            : "https://via.placeholder.com/260x180?text=Product"
-                        }
+                        src={resolveImageUrl(item.img)}
                         alt={item.name}
                       />
                       <figcaption className="muted">Supplier SKU: {item.productId}</figcaption>

@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { formatLKR } from "../../../utils/currency";
 
+const API_ROOT = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/$/, "");
+
 function ReceivedOrders({ onOrdersLoaded }) {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,7 +14,7 @@ function ReceivedOrders({ onOrdersLoaded }) {
     if (!token) return;
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/admin-orders/supplier", {
+      const res = await fetch(`${API_ROOT}/api/admin-orders/supplier`, {
         headers: { Authorization: token ? `Bearer ${token}` : "" },
       });
 
@@ -33,7 +35,7 @@ function ReceivedOrders({ onOrdersLoaded }) {
   // Handle accept/decline actions
   const handleRespond = async (id, action) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/admin-orders/${id}/respond`, {
+      const res = await fetch(`${API_ROOT}/api/admin-orders/${id}/respond`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -98,7 +100,7 @@ function ReceivedOrders({ onOrdersLoaded }) {
               <td>{o.paymentMethod}</td>
               <td>
                 {o.paymentMethod === "Bank Transfer" && o.slip ? (
-                  <a href={`http://localhost:5000${o.slip}`} target="_blank" rel="noreferrer">
+                  <a href={`${API_ROOT}${o.slip.startsWith('/') ? '' : '/'}${o.slip}`} target="_blank" rel="noreferrer">
                     View Slip
                   </a>
                 ) : (

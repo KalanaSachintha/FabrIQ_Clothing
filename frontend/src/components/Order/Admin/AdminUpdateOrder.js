@@ -4,6 +4,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import "./AdminUpdateOrder.css";
 import { formatLKR } from "../../../utils/currency";
 
+const API_ROOT = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/$/, "");
+
 function AdminUpdateOrder() {
   const [order, setOrder] = useState(null);
   const navigate = useNavigate();
@@ -14,7 +16,7 @@ function AdminUpdateOrder() {
     const fetchOrder = async () => {
       try {
         const token = localStorage.getItem("token"); // ✅ get token
-        const response = await axios.get(`http://localhost:5000/api/admin-orders/${id}`, {
+        const response = await axios.get(`${API_ROOT}/api/admin-orders/${id}`, {
           headers: {
             Authorization: token ? `Bearer ${token}` : "",
           },
@@ -42,7 +44,7 @@ function AdminUpdateOrder() {
     try {
       const token = localStorage.getItem("token"); // ✅ get token
       const response = await axios.put(
-        `http://localhost:5000/api/admin-orders/${id}`,
+        `${API_ROOT}/api/admin-orders/${id}`,
         {
           supplierId: order.supplierId?._id || null,
           status: order.status,

@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "./AdminOrders.css";
 import { formatLKR } from "../../../utils/currency";
 
+const API_ROOT = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/$/, "");
+
 function AdminOrders() {
   const [orders, setOrders] = useState([]);
   const [allOrders, setAllOrders] = useState([]); // Keep original list for search
@@ -21,7 +23,7 @@ function AdminOrders() {
 const fetchOrders = async () => {
   try {
     const token = localStorage.getItem("token"); // ✅ get token
-    const response = await fetch("http://localhost:5000/api/admin-orders", {
+    const response = await fetch(`${API_ROOT}/api/admin-orders`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: token ? `Bearer ${token}` : "", // ✅ send token
@@ -60,7 +62,7 @@ const fetchOrders = async () => {
   try {
     const token = localStorage.getItem("token");  // ✅ get token
 
-    const response = await fetch(`http://localhost:5000/api/admin-orders/${id}/cancel`, {
+    const response = await fetch(`${API_ROOT}/api/admin-orders/${id}/cancel`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

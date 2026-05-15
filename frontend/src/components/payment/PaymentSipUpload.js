@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const API_BASE = "http://localhost:5000/api"; // your backend
+const API_ROOT = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/$/, "");
+const API_BASE = `${API_ROOT}/api`; // your backend
 
 export default function UserSlipUpload() {
   const navigate = useNavigate();

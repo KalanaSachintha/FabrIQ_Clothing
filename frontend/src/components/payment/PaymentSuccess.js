@@ -20,15 +20,16 @@ export default function PaymentSuccess() {
           return;
         }
 
+        const API_ROOT = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/$/, "");
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:5000/api/payments/stripe/record-session", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-  },
-  body: JSON.stringify({ sessionId }),
-});
+        const res = await fetch(`${API_ROOT}/api/payments/stripe/record-session`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+          body: JSON.stringify({ sessionId }),
+        });
 
 
         const data = await res.json();

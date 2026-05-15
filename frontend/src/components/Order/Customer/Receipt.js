@@ -40,7 +40,8 @@ function Receipt() {
           throw new Error("You must be logged in to view receipts");
         }
 
-        const response = await fetch(`http://localhost:5000/api/receipts/${orderId}`, {
+        const API_ROOT = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/$/, "");
+        const response = await fetch(`${API_ROOT}/api/receipts/${orderId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",

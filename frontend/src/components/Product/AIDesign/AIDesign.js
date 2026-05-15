@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { Sparkles, Download, RefreshCw, Layers, AlertCircle, User, UserCheck, Image as ImageIcon, RotateCcw, Edit3 } from "lucide-react";
 import "./AIDesign.css";
 
+const API_ROOT = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/$/, "");
+
 const AIDesign = () => {
     const navigate = useNavigate();
     const [prompt, setPrompt] = useState("");
@@ -34,7 +36,7 @@ const AIDesign = () => {
         setError(false);
 
         try {
-            const res = await axios.post("http://localhost:5000/api/ai/generate", {
+            const res = await axios.post(`${API_ROOT}/api/ai/generate`, {
                 userPrompt: userInput, // Using the input text or combining with model styles
             });
             
