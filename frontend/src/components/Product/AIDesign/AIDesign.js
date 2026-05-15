@@ -46,7 +46,8 @@ const AIDesign = () => {
         } catch (err) {
             console.error("Error generating design:", err);
             setError(true);
-            setStatusMsg("Error generating design. Please check your backend console!");
+            const backendMsg = err.response?.data?.message || err.response?.data?.detail;
+            setStatusMsg(backendMsg ? `AI Error: ${backendMsg}` : "Error generating design. Please check your backend console!");
         } finally {
             setIsGenerating(false);
         }
