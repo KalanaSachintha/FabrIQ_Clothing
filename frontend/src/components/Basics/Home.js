@@ -159,6 +159,7 @@ function Home() {
 
   const resolveProductImage = (imagePath) => {
     if (!imagePath) return "/images/logoo.png";
+    if (/^data:image\//i.test(imagePath)) return imagePath;
     if (/^https?:\/\//i.test(imagePath)) return imagePath;
     return `${apiImageRoot}${imagePath.startsWith("/") ? "" : "/"}${imagePath}`;
   };

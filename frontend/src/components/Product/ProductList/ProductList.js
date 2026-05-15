@@ -6,6 +6,13 @@ import { formatLKR } from "../../../utils/currency";
 
 const API_ROOT = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/$/, "");
 
+const resolveUrl = (path) => {
+  if (!path) return "";
+  if (/^data:image\//i.test(path)) return path;
+  if (/^https?:\/\//i.test(path)) return path;
+  return `${API_ROOT}${path.startsWith("/") ? "" : "/"}${path}`;
+};
+
 const resolveProductImage = (product) => {
   if (Array.isArray(product?.colorVariants) && product.colorVariants.length) {
     const withImages = product.colorVariants.find(
@@ -13,19 +20,19 @@ const resolveProductImage = (product) => {
     );
     const candidate = withImages?.imageUrls?.[0];
     if (candidate) {
-      return candidate.startsWith("http") ? candidate : `${API_ROOT}${candidate}`;
+      return resolveUrl(candidate);
     }
   }
 
   if (Array.isArray(product?.galleryImageUrls) && product.galleryImageUrls.length) {
     const candidate = product.galleryImageUrls[0];
     if (candidate) {
-      return candidate.startsWith("http") ? candidate : `${API_ROOT}${candidate}`;
+      return resolveUrl(candidate);
     }
   }
 
   if (product?.imageUrl) {
-    return product.imageUrl.startsWith("http") ? product.imageUrl : `${API_ROOT}${product.imageUrl}`;
+    return resolveUrl(product.imageUrl);
   }
 
   return "";

@@ -111,7 +111,17 @@ function UpdateSupplierProduct() {
           <textarea name="description" placeholder="Description" value={product.description} onChange={handleChange} required />
           <input type="file" name="image" accept="image/*" onChange={handleChange} />
           {product.imageUrl && (
-            <img src={product.imageUrl.startsWith("http") ? product.imageUrl : `${API_ROOT}${product.imageUrl}`} alt="Current" width="150" />
+            <img
+              src={
+                /^data:image\//i.test(product.imageUrl)
+                  ? product.imageUrl
+                  : product.imageUrl.startsWith("http")
+                  ? product.imageUrl
+                  : `${API_ROOT}${product.imageUrl.startsWith("/") ? "" : "/"}${product.imageUrl}`
+              }
+              alt="Current"
+              width="150"
+            />
           )}
           <button type="submit">Update Supplier Product</button>
         </form>

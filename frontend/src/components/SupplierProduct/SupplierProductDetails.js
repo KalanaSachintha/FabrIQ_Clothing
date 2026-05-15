@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./SupplierProductDetails.css";
 
+const API_ROOT = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/$/, "");
+
 function SupplierProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -16,7 +18,7 @@ function SupplierProductDetails() {
     setLoading(true);
     setError("");
 
-    fetch(`http://localhost:5000/supplier-products/${id}`, {
+    fetch(`${API_ROOT}/supplier-products/${id}`, {
       headers: {
         Authorization: token ? `Bearer ${token}` : "",
       },
@@ -45,9 +47,10 @@ function SupplierProductDetails() {
 
   const imageSrc = useMemo(() => {
     if (!product?.imageUrl) return "/images/placeholder.png";
+    if (/^data:image\//i.test(product.imageUrl)) return product.imageUrl;
     return product.imageUrl.startsWith("http")
       ? product.imageUrl
-      : `http://localhost:5000${product.imageUrl}`;
+      : `${API_ROOT}${product.imageUrl.startsWith("/") ? "" : "/"}${product.imageUrl}`;
   }, [product]);
 
   const formattedPrice = useMemo(() => {

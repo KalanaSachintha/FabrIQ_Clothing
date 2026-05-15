@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { AdminCartContext } from "../Order/Admin/AdminCartContext";
 import { formatLKR } from "../../utils/currency";
 
+const API_ROOT = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/$/, "");
+
 function SupplierAdminProductList() {
   const [products, setProducts] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
@@ -20,7 +22,7 @@ function SupplierAdminProductList() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-  fetch("http://localhost:5000/supplier-products", {
+    fetch(`${API_ROOT}/supplier-products`, {
       headers: {
         Authorization: token ? `Bearer ${token}` : "",
       },
@@ -66,6 +68,13 @@ function SupplierAdminProductList() {
     const timer = setTimeout(() => setFeedback(null), 3500);
     return () => clearTimeout(timer);
   }, [feedback]);
+
+  const resolveImageUrl = (path) => {
+    if (!path) return "";
+    if (/^data:image\//i.test(path)) return path;
+    if (/^https?:\/\//i.test(path)) return path;
+    return `${API_ROOT}${path.startsWith("/") ? "" : "/"}${path}`;
+  };
 
   const handleAddToCart = (product) => {
     const alreadyInCart = cartItems?.some((item) => item.productId === product._id);
@@ -175,11 +184,7 @@ function SupplierAdminProductList() {
           filteredProducts.map((p) => (
             <div key={p._id} className="product-card">
               <img
-                src={
-                  p.imageUrl?.startsWith("http")
-                    ? p.imageUrl
-                    : `http://localhost:5000${p.imageUrl}`
-                }
+                src={resolveImageUrl(p.imageUrl)}
                 alt={p.name}
               />
               <h3>{p.name}</h3>

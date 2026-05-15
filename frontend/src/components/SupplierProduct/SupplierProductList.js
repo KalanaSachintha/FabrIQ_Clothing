@@ -103,6 +103,13 @@ function SupplierProductList() {
     }
   };
 
+  const resolveImageUrl = (path) => {
+    if (!path) return "/images/placeholder.png";
+    if (/^data:image\//i.test(path)) return path;
+    if (/^https?:\/\//i.test(path)) return path;
+    return `${API_ROOT}${path.startsWith("/") ? "" : "/"}${path}`;
+  };
+
   if (loading) return <p> Loading supplier products...</p>;
   if (error) return <p style={{ color: "red" }}> {error}</p>;
 
@@ -150,7 +157,7 @@ function SupplierProductList() {
           filteredProducts.map((p) => (
             <div key={p._id} className="product-card">
               <img
-                src={p.imageUrl ? (p.imageUrl.startsWith("http") ? p.imageUrl : `${API_ROOT}${p.imageUrl}`) : ""}
+                src={resolveImageUrl(p.imageUrl)}
                 alt={p.name}
               />
               <h3>{p.name}</h3>
