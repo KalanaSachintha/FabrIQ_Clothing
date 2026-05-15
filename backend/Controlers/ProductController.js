@@ -41,13 +41,16 @@ const normalizeExistingUploadUrl = (raw) => {
   if (typeof raw !== "string") return "";
   const trimmed = raw.trim();
   if (!trimmed) return "";
-  if (trimmed.startsWith("/uploads/")) return trimmed;
+
+  // 1. Handle our own absolute URLs by converting to relative /uploads/...
   const token = "/uploads/";
   const index = trimmed.indexOf(token);
   if (index >= 0) {
     return trimmed.slice(index);
   }
-  return "";
+
+  // 2. Allow data URLs, external URLs, or already relative paths
+  return trimmed;
 };
 
 const parseColorVariantsPayload = (input) => {
@@ -482,7 +485,8 @@ const addProduct = async (req, res) => {
       .status(201)
       .json({ message: "Product added successfully", product: freshProduct || product });
   } catch (error) {
-    return res.status(400).json({ message: "Error adding product", error });
+    console.error("Error adding product:", error);
+    return res.status(400).json({ message: "Error adding product", error: error.message });
   }
 };
 
@@ -706,7 +710,8 @@ const updateProduct = async (req, res) => {
 
   return res.status(200).json({ message: "Product updated successfully", product: freshProduct || product });
   } catch (error) {
-    return res.status(500).json({ message: "Error updating product", error });
+    console.error("Error updating product:", error);
+    return res.status(500).json({ message: "Error updating product", error: error.message });
   }
 };
 
